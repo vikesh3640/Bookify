@@ -1,0 +1,74 @@
+.form-container {
+  width: 40%;
+  margin: auto;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+.bordered {
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+input, textarea, select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.photo-box {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  font-size: 24px;
+  color: #888;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background: #218838;
+}

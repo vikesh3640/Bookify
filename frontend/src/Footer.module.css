@@ -1,0 +1,149 @@
+.footer {
+    background-color: #f8f5fc;
+    padding: 40px 0;
+    padding-bottom: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .newsletter {
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .newsletter h3 {
+    color: #5e298a;
+    font-size: 18px;
+  }
+  
+  .newsletter p {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .subscribeBox {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .subscribeBox input {
+    padding: 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .subscribeBox button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+  }
+  
+  /* Footer Sections */
+  .footerContainer {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0;
+    background-color:  #f7f6f6;
+    border-top: 1px solid #b7b4b4;
+  }
+  
+  .footerLogo h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5e298a;
+  }
+  
+  .monkey {
+    color: #f48c06;
+  }
+  
+  .trustpilot {
+    width: 120px;
+    margin-top: 10px;
+  }
+  
+  .footerLinks {
+    display: flex;
+    justify-content: space-between;
+    width:40vw;
+    gap: 50px;
+  }
+  
+  .footerLinks h4 {
+    color: #5e298a;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .footerLinks ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footerLinks ul li {
+    margin-bottom: 5px;
+  }
+  
+  .footerLinks ul li a {
+    text-decoration: none;
+    color: #555;
+  }
+  
+  .footerLinks ul li a:hover {
+    color: #5e298a;
+  }
+  
+  /* Bottom Footer */
+  .footerBottom {
+    border-top: 1px solid #b2b2b2;
+    padding-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background-color:  #f7f6f6;
+    margin-bottom: 0%;
+  }
+  
+  .info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 17px;
+    color: #805688;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid #b2b2b2;
+    padding-bottom: 20px;
+  }
+  
+  .payment {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    padding-bottom: 2rem;;
+  }
+  
+  .payment p {
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .paymentIcons {
+    margin-top: 1rem;
+    width:40%;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+  }
+  
+  .paymentIcons img {
+    width: 50px;
+    margin: 5px;
+  }
+  

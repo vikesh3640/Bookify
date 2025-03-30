@@ -1,0 +1,112 @@
+/* General Page Styling */
+.support-page {
+    font-family: "Arial", sans-serif;
+    color: #333;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background: url("../src/assets/quence.jpg") center/cover no-repeat;
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+  }
+  
+  .hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Support Options */
+  .support-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  .support-box {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 200px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .support-box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .support-box i {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .search-bar input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  /* More Topics Section */
+  .topics-section {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .topics-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Topics Grid */
+  .topics-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .topic {
+    text-align: left;
+    max-width: 300px;
+  }
+  
+  .topic h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .topic ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .topic li {
+    font-size: 14px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .topic li:hover {
+    text-decoration: underline;
+  }
+  
+  .topic a {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #000;
+  }
+  
