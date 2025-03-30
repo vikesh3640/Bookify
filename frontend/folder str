@@ -1,0 +1,813 @@
+
+1.BOOKIFY
+   >frontend 
+     node_modules ,  public ,  src(assets ,components(//jsx component files) ,css(css files), App.jsx, main.jsx), index.html, package.json
+     
+
+   >backend
+      config(db.js),middlewares(auth.js), models(user.js), routes(user.js),services (authentication.js), index.js
+
+
+
+1.BOOKIFY
+   >frontend >src > components
+       1.Category.jsx
+
+        import React from "react";
+import "../../src/css/Category.css";
+
+const categories = [
+  { name: "Fiction", image: "../../fiction.png" },
+  { name: "Comics", image: "../../s5.jpg" },
+  { name: "Children's Books",  image: "../../s2.jpg" },
+  { name: "Mystery & Thriller",  image: "../../s4.jpg" },
+  { name: "Academic", image: "../../s6.jpg" },
+];
+
+const promotions = [
+  {
+    title: "Bestsellers",
+    discount: "Get Up to 40% Off",
+    image: "../../cat2.png",
+  },
+  {
+    title: "Rare Collections",
+    discount: "Limited Edition",
+    image: "../../cat1.png",
+  },
+];
+const BookCategories = () => {
+  return (
+    <div className="book-categories-container">
+      <div className="promotions-container">
+        {promotions.map((promo, index) => (
+          <div key={index} className="promo-card" style={{ backgroundImage: `url(${promo.image})` }}>
+            <div className="promo-content">
+              <h3>{promo.title}</h3>
+              <p>{promo.discount}</p>
+              <button className="shop-now-btn">Shop Now</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <h2 className="section-title">Featured Categories</h2>
+      <div className="categories-grid">
+        {categories.map((category, index) => (
+          <div key={index} className="category-card">
+            <img src={category.image} alt={category.name} />
+            <p>{category.name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default BookCategories;
+      
+      2.ContactUs.jsx
+      import React from "react";
+import "../../src/css/ContactUs.css";
+
+const ContactUs = () => {
+  return (
+    <div className="support-page">
+      {/* Hero Section */}
+      <div className="hero-section">
+        <h1>Get Support</h1>
+        <div className="support-options">
+          <div className="support-box">
+            <i className="fas fa-map-marker-alt"></i>
+            <p>TRACK YOUR ORDER</p>
+          </div>
+          <div className="support-box">
+            <i className="fas fa-undo"></i>
+            <p>START A RETURN</p>
+          </div>
+          <div className="support-box">
+            <i className="fas fa-edit"></i>
+            <p>CANCEL OR EDIT AN ORDER</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input type="text" placeholder="What can we help you with?" />
+      </div>
+
+      {/* More Topics Section */}
+      <div className="topics-section">
+        <h2>MORE TOPICS</h2>
+        <div className="topics-grid">
+          <div className="topic">
+            <h3>ORDER STATUS AND TRACKING</h3>
+            <ul>
+              <li>Order Status</li>
+              <li>More Detailed Tracking Information</li>
+              <li>Lost or Missing Package</li>
+              <li>Cancel an Order</li>
+              <li>Pre-Order FAQs</li>
+            </ul>
+            <a href="#">SEE MORE</a>
+          </div>
+          <div className="topic">
+            <h3>SHIPPING</h3>
+            <ul>
+              <li>Change Shipping Address</li>
+              <li>Shipping Costs</li>
+              <li>Shipping Times</li>
+              <li>Shipping Made to Order Items</li>
+              <li>International Shipping</li>
+            </ul>
+            <a href="#">SEE MORE</a>
+          </div>
+          <div className="topic">
+            <h3>RETURNS AND EXCHANGES</h3>
+            <ul>
+              <li>Cannot Locate Order</li>
+              <li>Return Instructions</li>
+              <li>Return and Exchange Processing Time</li>
+              <li>Return Policy</li>
+              <li>Exchange Instructions</li>
+            </ul>
+            <a href="#">SEE MORE</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default ContactUs;
+      
+        3.Footer.jsx
+
+        4.Homepage.jsx
+import React, { useState } from 'react';
+import book1 from '../assets/book1.jpeg';
+import '../../src/css/Homepage.css';
+
+const HomePage = () => {
+  const [searchQuery, setSearchQuery] = useState('');  //for search filtering
+  const [currentPage, setCurrentPage] = useState(1);  //for pagination
+  const books = [
+    { id: 1, image: book1, name: 'The Great Gatsby', price: 399 },
+    { id: 2, image: book1, name: 'To Kill a Mockingbird', price: 299 },
+    { id: 3, image: book1, name: '1984', price: 349 },
+    { id: 4, image: book1, name: 'Pride and Prejudice', price: 249 },
+    { id: 5, image: book1, name: 'Moby Dick', price: 199 },
+    { id: 6, image: book1, name: 'Hamlet', price: 299 },
+    { id: 7, image: book1, name: 'War and Peace', price: 399 },
+    { id: 8, image: book1, name: 'The Catcher in the Rye', price: 349 },
+    { id: 9, image: book1, name: 'Jane Eyre', price: 299 },
+    { id: 10, image: book1, name: 'The Hobbit', price: 349 },
+    { id: 11, image: book1, name: 'The Alchemist', price: 299 },
+    { id: 12, image: book1, name: 'The Da Vinci Code', price: 399 },
+    { id: 13, image: book1, name: 'The Fault in Our Stars', price: 349 },
+    { id: 14, image: book1, name: 'The Shining', price: 299 },
+    { id: 15, image: book1, name: 'Harry Potter and the Sorcerer’s Stone', price: 499 },
+    { id: 16, image: book1, name: 'Percy Jackson & The Olympians', price: 299 },
+    { id: 17, image: book1, name: 'The Maze Runner', price: 349 },
+    { id: 18, image: book1, name: 'Twilight', price: 399 },
+    { id: 19, image: book1, name: 'The Hunger Games', price: 449 },
+    { id: 20, image: book1, name: 'Divergent', price: 329 },
+  ];
+  const booksPerPage = 8;
+  const totalPages = Math.ceil(books.length /booksPerPage);
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to the first page when searching
+  };
+  const filteredBooks = books.filter((book) =>
+    book.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const displayedBooks = filteredBooks.slice(
+    (currentPage - 1) * booksPerPage,
+    currentPage * booksPerPage
+  );
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  return (
+    <div className="homepage-container">
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search for books..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="search-input"
+        />
+        <button className="search-button">Search</button>
+      </div>
+
+      {/* Items Grid */}
+      <div className="books-grid">
+        {displayedBooks.map((book) => (
+          <div key={book.id} className="book-card">
+            <img
+              src={book.image}
+              alt={book.name}
+              className="book-image"
+            />
+            <div className="book-details">
+              <h3 className="book-name">{book.name}</h3>
+              <p className="book-price">₹{book.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Pagination */}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            className={`pagination-button ${
+              currentPage === index + 1 ? 'active' : ''
+            }`}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default HomePage;
+         
+         5.LoginSignup.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styles from '../Login.module.css';
+
+const LoginSignup = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      if (isLogin) {
+        await axios.post('http://localhost:8000/api/user/signin', formData, { withCredentials: true });
+        navigate('/');
+      } else {
+        await axios.post('http://localhost:8000/api/user/signup', formData);
+        alert("Signup Successful!");
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || "Something went wrong");
+    }
+  };
+  return (
+    <div className={styles.loginSignupContainer}>
+      <div className={styles.formContainer}>
+        {/* Left Section */}
+        <div className={styles.left}>
+          <h1>All Books solutions at one place.</h1>
+          <p>Get any book to every book at the minimum cost. </p>
+        </div>
+
+        {/* Right Section (Login/Signup Form) */}
+        <div className={styles.right}>
+          <div className={styles.logoContainer}>
+          <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
+            <h2>Bookify</h2> {/* Update this with your actual heading */}
+          </div>
+          <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
+          <p>Please {isLogin ? "login" : "signup"} to your account</p>
+
+          <form onSubmit={handleSubmit}>
+            {!isLogin && (
+              <div className={styles.formGroup}>
+                <label>Full Name</label>
+                <input type="text" name="fullName" placeholder="Enter your full name" onChange={handleChange} required />
+              </div>
+            )}
+            <div className={styles.formGroup}>
+              <label>Email</label>
+              <input type="email" name="email" placeholder="Enter your email" onChange={handleChange} required />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Password</label>
+              <input type="password" name="password" placeholder="Enter your password" onChange={handleChange} required />
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+            <button type="submit" className={styles.submitBtn}>{isLogin ? "Login" : "Signup"}</button>
+          </form>
+
+          {/* Toggle between Login and Signup */}
+          <p className={styles.toggleText}>
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
+            <span onClick={() => setIsLogin(!isLogin)}> {isLogin ? "Signup" : "Login"}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default LoginSignup;
+          
+          6.Navbar.jsx
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../../src/css/Navbar.css';
+import logo from '../assets/logo.jpeg';
+const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLoginClick = () => {
+    navigate('/login'); 
+  };
+  return (
+    <div className="navbar">
+      <div className="logo">
+        <img src={logo} alt="Logo" />
+      </div>
+      <ul className="nav-links">
+        <li>
+          <Link to="/" className="nav-item">Home</Link>
+        </li>
+        <li>
+          <Link to="/seller" className="nav-item">Sell Books</Link>
+        </li>
+        <li>
+          <Link to="/helpandcontact" className="nav-item">Contact Us</Link>
+        </li>
+        <li>
+          <Link to="/cart" className="nav-item"> Cart </Link>
+        </li>
+      </ul>
+      <button className="login-btn" onClick={handleLoginClick}>Login</button>
+    </div>
+  );
+};
+export default Navbar;
+
+        7.Seller.jsx
+import React, { useState } from "react";
+import '../../src/css/Seller.css';
+import axios from "axios";
+const states = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
+  "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
+  "Uttar Pradesh", "Uttarakhand", "West Bengal"
+];
+const Seller = () => {
+  const [formData, setFormData] = useState({
+    bookName: "",
+    bookDetails: "",
+    demandPrice: "",
+    bookCondition: "Excellent",
+    state: "",
+    addressLine: "",
+    contactNumber: "",
+    photos: [],
+  });
+  const [toastVisible, setToastVisible] = useState(false);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files).slice(0, 6); // Limit to 6 images
+    setFormData({ ...formData, photos: files });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!/^[0-9]{10}$/.test(formData.contactNumber)) {
+      alert("Contact number must be exactly 10 digits.");
+      return;
+    }
+    const data = new FormData();
+    data.append("bookName", formData.bookName);
+    data.append("bookDetails", formData.bookDetails);
+    data.append("demandPrice", formData.demandPrice);
+    data.append("bookCondition", formData.bookCondition);
+    data.append("state", formData.state);
+    data.append("addressLine", formData.addressLine);
+    data.append("contactNumber", formData.contactNumber);
+    formData.photos.forEach((photo) => {
+      data.append("photos", photo);
+    });
+    try {
+      const response = await axios.post("http://localhost:5000/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log("Response:", response.data);
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 3000);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload failed. Try again.");
+    }
+    setFormData({
+      bookName: "",
+      bookDetails: "",
+      demandPrice: "",
+      bookCondition: "Excellent",
+      state: "",
+      addressLine: "",
+      contactNumber: "",
+      photos: [],
+    });
+  };
+  return (
+    <div className="form-container">
+      <h2>Sell Your Book</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group bordered">
+          <label>Book Name:</label>
+          <input type="text" name="bookName" value={formData.bookName} onChange={handleChange} required />
+        </div>
+        <div className="form-group bordered">
+          <label>Book Details:</label>
+          <textarea name="bookDetails" value={formData.bookDetails} onChange={handleChange} required rows="4" />
+        </div>
+        <div className="form-group bordered">
+          <label>Demand Price (₹):</label>
+          <input type="number" name="demandPrice" value={formData.demandPrice} onChange={handleChange} required min="1" />
+        </div>
+        <div className="form-group bordered">
+          <label>Book Condition:</label>
+          <select name="bookCondition" value={formData.bookCondition} onChange={handleChange} required>
+            <option value="Excellent">Excellent</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+          </select>
+        </div>
+        <div className="form-group bordered">
+          <label>State:</label>
+          <select name="state" value={formData.state} onChange={handleChange} required>
+            <option value="">Select State</option>
+            {states.map((state, index) => (
+              <option key={index} value={state}>{state}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group bordered">
+          <label>Address Line:</label>
+          <input type="text" name="addressLine" value={formData.addressLine} onChange={handleChange} required />
+        </div>
+        <div className="form-group bordered">
+          <label>Contact Number:</label>
+          <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required pattern="[0-9]{10}" title="Contact number must be exactly 10 digits." />
+        </div>
+        {/* Upload Photos Section */}
+        <div className="form-group bordered">
+          <label>Upload Photos (up to 6):</label>
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} />
+          <div className="photo-grid">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="photo-box">
+                {formData.photos[index] ? (
+                  <img src={URL.createObjectURL(formData.photos[index])} alt="Preview" />
+                ) : (
+                  <span>+</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
+      {toastVisible && <div className="toast">Form submitted successfully!</div>}
+    </div>
+  );
+};
+export default Seller;
+
+        8.SummaryPage.jsx
+        import React, { useState } from "react";
+import "../../src/css/SummaryPage.css";
+import book1 from '../assets/book1.jpeg';
+import book2 from '../assets/book2.jpg';
+
+const CartPage = () => {
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      title: "The Great Gatsby",
+      price: 399,
+      quantity: 1,
+      image: book1, 
+    },
+    {
+      id: 2,
+      title: "Rich Dad Poor Dad",
+      price: 299,
+      quantity: 1,
+      image: book2, 
+    },
+  ]);
+  const [selectedPayment, setSelectedPayment] = useState("creditCard");
+  const handleQuantityChange = (id, delta) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
+  };
+  const handleRemove = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+  const totalPrice = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  const handlePaymentChange = (e) => {
+    setSelectedPayment(e.target.value);
+  };
+  const handleCheckout = () => {
+    alert("Proceeding to payment");
+  };
+
+  return (
+    <div className="cart-container">
+      <h1>Your Cart</h1>
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <div className="cart-items">
+          {cartItems.map((item) => (
+            <div key={item.id} className="cart-item">
+              <div className="cart-item-image">
+                <img src={item.image} alt={item.title} />
+              </div>
+              <div className="cart-item-details">
+                <h3>{item.title}</h3>
+                <p>Price: ₹{item.price}</p>
+                <div className="quantity-controls">
+                  <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
+                </div>
+                <button
+                  className="remove-button"
+                  onClick={() => handleRemove(item.id)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+          <div className="cart-summary">
+            <h3>Total Price: ₹{totalPrice}</h3>
+            <h4>Payment Method:</h4>
+            <select value={selectedPayment} onChange={handlePaymentChange}>
+              <option value="creditCard">Credit Card</option>
+              <option value="debitCard">Debit Card</option>
+              <option value="upi">UPI</option>
+              <option value="netBanking">Net Banking</option>
+            </select>
+            <button className="checkout-button" onClick={handleCheckout}>
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CartPage;
+
+
+>frontend>src>App.jsx
+
+import './App.css'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom' 
+import Homepage from './components/Homepage'
+import Navbar from './components/Navbar'
+import Seller from './components/Seller'
+import Contactus from './components/ContactUs'
+import LoginSignup from './components/LoginSignup'
+import SummaryPage from './components/SummaryPage'
+import Footer from './components/Footer'
+import Category from './components/Category'
+const router=createBrowserRouter(
+  [
+    {
+      path:"/" ,
+      element:
+      <div>
+        <Navbar/>
+        <Category/>
+        <Homepage/>
+        <Footer/>
+      </div>
+   
+    },
+    {
+      path:"/seller" ,
+      element:
+      <div>
+          <Navbar/>
+          <Seller/>
+
+       </div>
+    },
+    {
+      path:"/helpandcontact" ,
+      element:
+      <div>
+          <Navbar/>
+          <Contactus/>
+       </div>
+    },
+    {
+      path:"/login" ,
+      element:
+      <div>
+          <LoginSignup/>
+       </div>
+    },
+    {
+      path:"/cart" ,
+      element:
+      <div>
+          <SummaryPage/>
+       </div>
+    },
+  ]
+)
+function App() {
+  return ( 
+      <RouterProvider router={router}/>
+  )
+}
+export default App
+
+>frontend >src> main.jsx
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+    <App />
+)
+
+
+
+
+// >backend
+      config(db.js),middlewares(auth.js), models(user.js), routes(user.js),services (authentication.js), index.js
+
+
+      1.config>(db.js)
+
+      const mongoose = require('mongoose');
+const connectDB = async () => {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/bookify', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('MongoDB connected successfully');
+    } catch (error) {
+        console.error('MongoDB connection failed:', error.message);
+        process.exit(1);
+    }
+};
+module.exports = connectDB;
+
+2.middlewares(auth.js)
+    const { validateToken } = require("../services/authentication");
+
+function checkAuth(req, res, next) {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+    try {
+        req.user = validateToken(token);
+        next();
+    } catch {
+        return res.status(401).json({ error: "Invalid token" });
+    }
+}
+module.exports = { checkAuth };
+
+3.models(user.js)
+const { createHmac, randomBytes } = require("crypto");
+const { Schema, model } = require('mongoose');
+const { createTokenForUser } = require("../services/authentication");
+
+const userSchema = new Schema({
+    fullName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    salt: { type: String },
+    password: { type: String, required: true },
+    profileImageURL: { type: String, default: "/images/default.webp" },
+    role: { type: String, enum: ["USER", "ADMIN"], default: "USER" }
+}, { timestamps: true });
+
+// Hash password before saving
+userSchema.pre("save", function (next) {
+    if (!this.isModified("password")) return next();
+    this.salt = randomBytes(16).toString("hex");
+    this.password = createHmac('sha256', this.salt).update(this.password).digest("hex");
+    next();
+});
+
+// Password Matching & Token Generation
+userSchema.statics.matchPasswordAndGenerateToken = async function (email, password) {
+    const user = await this.findOne({ email });
+    if (!user) throw new Error('User not found');
+
+    const hash = createHmac('sha256', user.salt).update(password).digest("hex");
+    if (hash !== user.password) throw new Error('Incorrect password');
+
+    return createTokenForUser(user);
+};
+
+const User = model('User', userSchema);
+module.exports = User;
+
+
+4. routes(user.js)
+const { Router } = require("express");
+const User = require('../models/user');
+const { createTokenForUser } = require("../services/authentication");
+
+const router = Router();
+
+// Signup Route
+router.post('/signup', async (req, res) => {
+    try {
+        const { fullName, email, password } = req.body;
+        const user = await User.create({ fullName, email, password });
+        res.status(201).json({ message: "User registered successfully", user });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Login Route
+router.post('/signin', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const token = await User.matchPasswordAndGenerateToken(email, password);
+        res.cookie("token", token, { httpOnly: true }).json({ token });
+    } catch (error) {
+        res.status(401).json({ error: "Invalid email or password" });
+    }
+});
+
+// Logout Route
+router.get("/logout", (req, res) => {
+    res.clearCookie("token").json({ message: "Logged out successfully" });
+});
+
+module.exports = router;
+
+5.services (authentication.js)
+const JWT =require('jsonwebtoken');
+const secret="$uperMan@123";
+function createTokenForUser(user){
+    const payload={
+        _id : user._id,
+        email : user.email,
+        profileImageURL : user.profileImageURL,
+        role : user.role,
+    }
+    const token=JWT.sign(payload,secret);
+    return token;
+}
+function validateToken(token){
+    const payload=JWT.verify(token,secret);
+    return payload;
+}
+
+module.exports={
+    createTokenForUser,
+    validateToken,
+}
+
+6 index.js
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const connectDB = require('./config/db');
+const userRoute = require('./routes/user');
+
+const app = express();
+const PORT = 8000;
+connectDB();
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' })); // Allow frontend requests
+app.use('/api/user', userRoute);
+app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));

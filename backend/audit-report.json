@@ -1,0 +1,175 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "bal-util": {
+      "name": "bal-util",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "getsetdeep"
+      ],
+      "effects": [
+        "watchr"
+      ],
+      "range": "1.18.0",
+      "nodes": [
+        "node_modules/docker/node_modules/bal-util"
+      ],
+      "fixAvailable": true
+    },
+    "bl": {
+      "name": "bl",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1085742,
+          "name": "bl",
+          "dependency": "bl",
+          "title": "Memory Exposure in bl",
+          "url": "https://github.com/advisories/GHSA-wrw9-m778-g6mc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-200"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.9.5"
+        },
+        {
+          "source": 1090072,
+          "name": "bl",
+          "dependency": "bl",
+          "title": "Remote Memory Exposure in bl",
+          "url": "https://github.com/advisories/GHSA-pp7h-53gx-mx7r",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-125",
+            "CWE-126"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L"
+          },
+          "range": "<1.2.3"
+        }
+      ],
+      "effects": [
+        "pygmentize-bundled"
+      ],
+      "range": "<=1.2.2",
+      "nodes": [
+        "node_modules/docker/node_modules/bl"
+      ],
+      "fixAvailable": {
+        "name": "docker",
+        "version": "1.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "docker": {
+      "name": "docker",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "pygmentize-bundled"
+      ],
+      "effects": [],
+      "range": "0.2.10 - 0.2.14",
+      "nodes": [
+        "node_modules/docker"
+      ],
+      "fixAvailable": {
+        "name": "docker",
+        "version": "1.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "getsetdeep": {
+      "name": "getsetdeep",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1086642,
+          "name": "getsetdeep",
+          "dependency": "getsetdeep",
+          "title": "Prototype Pollution in getsetdeep",
+          "url": "https://github.com/advisories/GHSA-8j49-49jq-vwcq",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=0.0.0"
+        }
+      ],
+      "effects": [
+        "bal-util"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/docker/node_modules/getsetdeep",
+        "node_modules/getsetdeep"
+      ],
+      "fixAvailable": false
+    },
+    "pygmentize-bundled": {
+      "name": "pygmentize-bundled",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "bl"
+      ],
+      "effects": [
+        "docker"
+      ],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/docker/node_modules/pygmentize-bundled"
+      ],
+      "fixAvailable": {
+        "name": "docker",
+        "version": "1.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "watchr": {
+      "name": "watchr",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "bal-util"
+      ],
+      "effects": [],
+      "range": "2.3.10",
+      "nodes": [
+        "node_modules/docker/node_modules/watchr"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 3,
+      "critical": 0,
+      "total": 6
+    },
+    "dependencies": {
+      "prod": 205,
+      "dev": 0,
+      "optional": 1,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 205
+    }
+  }
+}

@@ -1,0 +1,243 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 1rem;
+  background-color: #014589;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 75px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Logo */
+.logo img {
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+}
+
+/* Nav Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #ecf0f1;
+  font-size: 1.4rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #1abc9c;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #1abc9c;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* Login Button */
+.login-btn {
+  background-color: #1abc9c;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: #16a085;
+  transform: scale(1.05);
+}
+
+/* User Menu */
+.user-menu {
+  position: relative;
+  display: inline-block;
+  z-index: 1000;
+}
+
+/* User Button (No Background or Border) */
+.user-btn {
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* User Avatar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Dropdown Arrow */
+.dropdown-arrow {
+  font-size: 16px; 
+  margin-left: 3px;
+  display: inline-block;
+  color: #ccc;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate Arrow When Dropdown is Open */
+.user-menu:hover .dropdown-arrow,
+.dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* 🔥 Dropdown Menu - Fixed the Hover Gap */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 45px;  /* 🔥 Adjusted from 50px to 45px */
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  width: 150px;
+  z-index: 9999;
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* 🔥 Fix: Keep Dropdown Open When Hovering */
+.user-menu:hover .dropdown,
+.dropdown:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  gap: 10px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* Logout Button */
+.logout-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 12px 15px;
+  text-align: left;
+  cursor: pointer;
+  color: red;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icons for Dropdown */
+.dropdown-item img,
+.logout-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hamburger Menu (Mobile) */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+    display: none;
+    background-color: #014589;
+    width: 100%;
+    padding: 1rem;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .user-menu {
+    margin-top: 1rem;
+  }
+
+  .dropdown {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

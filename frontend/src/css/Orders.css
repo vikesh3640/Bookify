@@ -1,0 +1,111 @@
+.orders-page {
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures contents are centered */
+    gap:0.7rem;
+  }
+  
+  .orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #ffecd2, #fcb69f); /* Gradient background */
+    padding: 20px; 
+    border-radius: 10px; 
+    width: 60vw;
+    margin: auto; 
+  }
+  
+  .order-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    gap: 25px;
+  }
+  
+  /* Left Section */
+  .order-left {
+    display: flex;
+    flex: 1.5; 
+    align-items: center;
+    text-align: left;
+  }
+  
+  .order-item-image {
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 2rem;
+
+  }
+  
+  .order-item-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .order-item-details h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .order-item-details p {
+    margin: 5px 0;
+  }
+  
+  /* Center Section */
+  .order-center {
+    flex: 1; 
+    text-align: center;
+  }
+  
+  .order-amount {
+    font-size: 21px;
+    font-weight: bold;
+  }
+  
+  .order-status {
+    color: green;
+    font-size: 16px;
+  }
+  
+  .order-delivery-msg {
+    font-size: 14px;
+    color: gray;
+  }
+  
+  /* Right Section */
+  .order-right {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .rate-review {
+    background: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevents button from shrinking */
+  }
+  
+  .rate-review:hover {
+    background: #e65c00;
+  }
