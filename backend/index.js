@@ -13,11 +13,14 @@ const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
 const cartRoutes = require("./routes/cart");
 const paymentRoutes = require("./routes/payment");
-const orderRoutes = require("./routes/order"); 
+const orderRoutes = require("./routes/order");
 
+// Initialize environment variables
 dotenv.config();
+
+// Create Express App
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 // Connect to MongoDB
 connectDB();
@@ -28,26 +31,23 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-// Middlewares
+// Middleware
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files
+// Serve static files from 'uploads'
 app.use("/uploads", express.static("uploads"));
 
-// Routes
+// Use Routes
 app.use("/api/books", bookRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use("/api/orders", orderRoutes); 
+app.use("/api/orders", orderRoutes);
 
-// Start server
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB connected successfully"))
-    .catch((err) => console.error("MongoDB connection failed:", err));
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
