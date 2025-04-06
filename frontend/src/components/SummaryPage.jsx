@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+axios.defaults.withCredentials = true;
+
 const SummaryPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState("upi");

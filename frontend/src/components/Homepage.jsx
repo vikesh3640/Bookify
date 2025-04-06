@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../src/css/Homepage.css";
 
+axios.defaults.withCredentials = true;
 const HomePage = () => {
   const [books, setBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");

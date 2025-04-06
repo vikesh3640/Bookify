@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../../src/css/Navbar.css';
 import logo from '../assets/logo.jpeg';
 
+axios.defaults.withCredentials = true;
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);

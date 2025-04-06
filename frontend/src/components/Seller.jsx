@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../../src/css/Seller.css';
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const states = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
