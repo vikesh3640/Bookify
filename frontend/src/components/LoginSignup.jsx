@@ -16,41 +16,45 @@ const LoginSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
       let response;
       if (isLogin) {
-        response = await axios.post('http://localhost:8000/api/user/signin', formData, { withCredentials: true });
-  
-        // Store user in localStorage after successful login
+        response = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/user/signin`,
+          formData,
+          { withCredentials: true }
+        );
+
         if (response.data.user) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
         }
-  
+
         navigate('/');
       } else {
-        response = await axios.post('http://localhost:8000/api/user/signup', formData);
+        response = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/user/signup`,
+          formData
+        );
         alert("Signup Successful!");
       }
     } catch (error) {
       setError(error.response?.data?.error || "Something went wrong");
     }
   };
-  
+
   return (
     <div className={styles.loginSignupContainer}>
       <div className={styles.formContainer}>
-        {/* Left Section */}
         <div className={styles.left}>
           <h1>All Books solutions at one place.</h1>
           <p>Get any book to every book at the minimum cost. </p>
         </div>
 
-        {/* Right Section (Login/Signup Form) */}
         <div className={styles.right}>
           <div className={styles.logoContainer}>
-          <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
-            <h2>Bookify</h2> {/* Update this with your actual heading */}
+            <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
+            <h2>Bookify</h2>
           </div>
           <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
           <p>Please {isLogin ? "login" : "signup"} to your account</p>
@@ -74,7 +78,6 @@ const LoginSignup = () => {
             <button type="submit" className={styles.submitBtn}>{isLogin ? "Login" : "Signup"}</button>
           </form>
 
-          {/* Toggle between Login and Signup */}
           <p className={styles.toggleText}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <span onClick={() => setIsLogin(!isLogin)}> {isLogin ? "Signup" : "Login"}</span>

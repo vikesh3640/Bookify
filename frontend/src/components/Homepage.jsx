@@ -11,17 +11,15 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/books/all")
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/books/all`)
       .then((response) => setBooks(response.data))
       .catch((error) => console.error("Error fetching books:", error));
   }, []);
 
-  // Filtering books based on search query
   const filteredBooks = books.filter((book) =>
     book.bookName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
   const displayedBooks = filteredBooks.slice(
     (currentPage - 1) * booksPerPage,
@@ -57,7 +55,7 @@ const HomePage = () => {
           displayedBooks.map((book) => (
             <Link key={book._id} to={`/book/${book._id}`} className="book-card">
               <img
-                src={`http://localhost:8000/uploads/${book.photos[0]}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${book.photos[0]}`}
                 alt={book.bookName}
                 className="book-image"
               />
