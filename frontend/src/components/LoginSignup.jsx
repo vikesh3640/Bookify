@@ -25,15 +25,17 @@ const LoginSignup = () => {
     try {
       let response;
       if (isLogin) {
-        response = await axios.post(`${API_BASE}/api/user/signin`, formData);
-        
+        response = await axios.post(`${API_BASE}/api/user/signin`, formData, {
+          withCredentials: true,
+        });
+      
         if (response.data.user) {
-          // No need to store user in localStorage anymore
-          // The token will be automatically stored in cookies by the backend
+          // The token is stored in cookies
         }
-
+      
         navigate('/');
-      } else {
+      }
+       else {
         response = await axios.post(`${API_BASE}/api/user/signup`, formData);
         alert("Signup Successful!");
       }
