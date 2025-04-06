@@ -9,9 +9,11 @@ const SummaryPage = () => {
   const [selectedPayment, setSelectedPayment] = useState("upi");
   const [loading, setLoading] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/cart", { withCredentials: true })
+      .get(`${API_BASE_URL}/api/cart`, { withCredentials: true })
       .then((response) => {
         setCartItems(response.data.items || []);
       })
@@ -19,19 +21,7 @@ const SummaryPage = () => {
         console.error("Error fetching cart:", error);
         toast.error("Failed to load cart items");
       });
-
-    // Dynamically load Razorpay script
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => console.log("Razorpay SDK loaded.");
-    script.onerror = () => toast.error("Failed to load Razorpay SDK.");
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleQuantityChange = async (bookId, delta) => {
     const updatedCart = cartItems.map((item) => {
@@ -52,7 +42,7 @@ const SummaryPage = () => {
 
     try {
       await axios.put(
-        "http://localhost:8000/api/cart/update",
+        `${API_BASE_URL}/api/cart/update`,
         { bookId, quantity: updatedCart.find((item) => item.book._id === bookId)?.quantity },
         { withCredentials: true }
       );
@@ -66,7 +56,7 @@ const SummaryPage = () => {
 
   const handleRemove = async (bookId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/cart/remove/${bookId}`, { withCredentials: true });
+      await axios.delete(`${API_BASE_URL}/api/cart/remove/${bookId}`, { withCredentials: true });
       setCartItems((prevItems) => prevItems.filter((item) => item.book._id !== bookId));
       toast.success("Book removed from cart!");
     } catch (error) {
@@ -89,16 +79,11 @@ const SummaryPage = () => {
       return;
     }
 
-    if (!window.Razorpay) {
-      toast.error("Razorpay SDK not loaded yet!");
-      return;
-    }
-
     try {
       setLoading(true);
 
       const orderResponse = await axios.post(
-        "http://localhost:8000/api/payment/order",
+        `${API_BASE_URL}/api/payment/order`,
         { amount: totalPrice },
         { withCredentials: true }
       );
@@ -106,16 +91,16 @@ const SummaryPage = () => {
       const { orderId, currency } = orderResponse.data;
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Use Vite's env variable
+        key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: totalPrice * 100,
-        currency,
+        currency: currency,
         name: "Bookify Store",
         description: "Book Purchase",
         order_id: orderId,
         handler: async function (response) {
           try {
             await axios.post(
-              "http://localhost:8000/api/payment/verify",
+              `${API_BASE_URL}/api/payment/verify`,
               { ...response, orderId },
               { withCredentials: true }
             );
@@ -135,8 +120,8 @@ const SummaryPage = () => {
         },
       };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("Failed to initiate payment.");
@@ -155,7 +140,7 @@ const SummaryPage = () => {
           {cartItems.map(({ book, quantity }) => (
             <div key={book._id} className="cart-item">
               <div className="cart-item-image">
-                <img src={`http://localhost:8000/uploads/${book.photos[0]}`} alt={book.bookName} />
+                <img src={`${API_BASE_URL}/uploads/${book.photos[0]}`} alt={book.bookName} />
               </div>
               <div className="cart-item-details">
                 <h3>{book.bookName}</h3>

@@ -9,6 +9,8 @@ const LoginSignup = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -20,11 +22,9 @@ const LoginSignup = () => {
     try {
       let response;
       if (isLogin) {
-        response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/user/signin`,
-          formData,
-          { withCredentials: true }
-        );
+        response = await axios.post(`${API_BASE}/api/user/signin`, formData, {
+          withCredentials: true,
+        });
 
         if (response.data.user) {
           localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -32,10 +32,7 @@ const LoginSignup = () => {
 
         navigate('/');
       } else {
-        response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/user/signup`,
-          formData
-        );
+        response = await axios.post(`${API_BASE}/api/user/signup`, formData);
         alert("Signup Successful!");
       }
     } catch (error) {
@@ -46,11 +43,13 @@ const LoginSignup = () => {
   return (
     <div className={styles.loginSignupContainer}>
       <div className={styles.formContainer}>
+        {/* Left Section */}
         <div className={styles.left}>
           <h1>All Books solutions at one place.</h1>
           <p>Get any book to every book at the minimum cost. </p>
         </div>
 
+        {/* Right Section (Login/Signup Form) */}
         <div className={styles.right}>
           <div className={styles.logoContainer}>
             <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
@@ -63,24 +62,48 @@ const LoginSignup = () => {
             {!isLogin && (
               <div className={styles.formGroup}>
                 <label>Full Name</label>
-                <input type="text" name="fullName" placeholder="Enter your full name" onChange={handleChange} required />
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Enter your full name"
+                  onChange={handleChange}
+                  required
+                />
               </div>
             )}
             <div className={styles.formGroup}>
               <label>Email</label>
-              <input type="email" name="email" placeholder="Enter your email" onChange={handleChange} required />
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className={styles.formGroup}>
               <label>Password</label>
-              <input type="password" name="password" placeholder="Enter your password" onChange={handleChange} required />
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                onChange={handleChange}
+                required
+              />
             </div>
             {error && <p className={styles.error}>{error}</p>}
-            <button type="submit" className={styles.submitBtn}>{isLogin ? "Login" : "Signup"}</button>
+            <button type="submit" className={styles.submitBtn}>
+              {isLogin ? "Login" : "Signup"}
+            </button>
           </form>
 
+          {/* Toggle between Login and Signup */}
           <p className={styles.toggleText}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <span onClick={() => setIsLogin(!isLogin)}> {isLogin ? "Signup" : "Login"}</span>
+            <span onClick={() => setIsLogin(!isLogin)}>
+              {" "}
+              {isLogin ? "Signup" : "Login"}
+            </span>
           </p>
         </div>
       </div>

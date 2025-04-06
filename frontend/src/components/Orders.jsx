@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../src/css/Orders.css";
 
-const API = import.meta.env.VITE_API_BASE_URL;
-
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
 
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${API}/api/user/me`, {
+        const response = await axios.get(`${API_BASE}/api/user/me`, {
           withCredentials: true,
         });
         setUserId(response.data._id);
@@ -22,14 +22,14 @@ const Orders = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [API_BASE]);
 
   useEffect(() => {
     if (!userId) return;
 
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${API}/api/orders?userId=${userId}`);
+        const response = await axios.get(`${API_BASE}/api/orders?userId=${userId}`);
         setOrders(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -39,7 +39,7 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, [userId]);
+  }, [userId, API_BASE]);
 
   return (
     <div className="orders-page">
@@ -54,11 +54,12 @@ const Orders = () => {
             <div key={order._id} className="order-card">
               {order.items.map(({ bookId, quantity }) => (
                 <div key={bookId._id} className="order-item">
+                  {/* Left Section: Image, Book Name, Color, Quantity */}
                   <div className="order-left">
                     <img
                       src={
                         bookId.photos?.[0]
-                          ? `${API}/uploads/${bookId.photos[0]}`
+                          ? `${API_BASE}/uploads/${bookId.photos[0]}`
                           : "/default-book.png"
                       }
                       alt={bookId.bookName}
@@ -71,6 +72,7 @@ const Orders = () => {
                     </div>
                   </div>
 
+                  {/* Center Section: Price, Delivery Status */}
                   <div className="order-center">
                     <p className="order-amount">₹{order.amount}</p>
                     <p className={`order-status ${order.paymentStatus.toLowerCase()}`}>
@@ -78,6 +80,7 @@ const Orders = () => {
                     </p>
                   </div>
 
+                  {/* Right Section: Rate & Review Button */}
                   <div className="order-right">
                     <button className="rate-review">★ Rate & Review Product</button>
                   </div>
