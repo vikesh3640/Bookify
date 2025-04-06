@@ -33,8 +33,8 @@ if (!fs.existsSync(uploadDir)) {
 
 // ✅ Updated CORS configuration
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://bookify-seven-phi.vercel.app/"
+  "http://localhost:5173", // For local dev environment
+  "https://bookify-seven-phi.vercel.app", // Frontend URL deployed on Vercel
 ];
 
 app.use(cors({
@@ -47,8 +47,10 @@ app.use(cors({
       return callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true,  // Allow credentials (cookies) to be sent
+  credentials: true,  // Allow cookies and authentication headers
 }));
+
+
 
 // Middleware
 app.use(express.json());
