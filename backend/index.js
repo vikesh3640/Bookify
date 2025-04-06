@@ -34,7 +34,7 @@ if (!fs.existsSync(uploadDir)) {
 // ✅ Updated CORS configuration
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://bookify-frontendd.vercel.app"
+  "https://bookify-seven-phi.vercel.app/"
 ];
 
 app.use(cors({
