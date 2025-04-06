@@ -31,46 +31,33 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-// ✅ Updated CORS configuration
+// ✅ CORS configuration for frontend on Vercel
 const allowedOrigins = [
-  "http://localhost:5173", // For local dev environment
-  "https://bookify-seven-phi.vercel.app", // Frontend URL deployed on Vercel
+    "http://localhost:5173",
+    "https://bookify-seven-phi.vercel.app"
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,  // Allow cookies and authentication headers
+    origin: allowedOrigins,
+    credentials: true, // Enable sending of cookies
 }));
 
-
-
-// Middleware
+// ✅ Middlewares
 app.use(express.json());
-app.use(cookieParser());  // Middleware to parse cookies
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from 'uploads'
+// ✅ Serve static files
 app.use("/uploads", express.static("uploads"));
 
-// Authentication Middleware
-const { checkAuth } = require("./middlewares/auth");
-
-// Use Routes
+// ✅ Routes
 app.use("/api/books", bookRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Start the server
+// ✅ Start the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
