@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import '../../src/css/Seller.css';
 import axios from "axios";
-axios.defaults.withCredentials = true;
 
 const states = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
   "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
   "Uttar Pradesh", "Uttarakhand", "West Bengal"
 ];
 
@@ -24,7 +23,7 @@ const Seller = () => {
     photos: [],
   });
 
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,21 +37,12 @@ const Seller = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate contact number
+  
     if (!/^[0-9]{10}$/.test(formData.contactNumber)) {
-      setToastMessage("Contact number must be exactly 10 digits.");
-      setTimeout(() => setToastMessage(""), 3000);
+      alert("Contact number must be exactly 10 digits.");
       return;
     }
-
-    // Validate photo limit again (defensive check)
-    if (formData.photos.length > 6) {
-      setToastMessage("You can upload a maximum of 6 photos.");
-      setTimeout(() => setToastMessage(""), 3000);
-      return;
-    }
-
+  
     const data = new FormData();
     data.append("bookName", formData.bookName);
     data.append("bookDetails", formData.bookDetails);
@@ -61,42 +51,37 @@ const Seller = () => {
     data.append("state", formData.state);
     data.append("addressLine", formData.addressLine);
     data.append("contactNumber", formData.contactNumber);
-
+  
     formData.photos.forEach((photo) => {
       data.append("photos", photo);
     });
-
+  
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/books/upload`,
-        data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        }
-      );
-
-      console.log("Response:", response.data);
-      setToastMessage("Form submitted successfully!");
-      setTimeout(() => setToastMessage(""), 3000);
-
-      // Reset form after submission
-      setFormData({
-        bookName: "",
-        bookDetails: "",
-        demandPrice: "",
-        bookCondition: "Excellent",
-        state: "",
-        addressLine: "",
-        contactNumber: "",
-        photos: [],
+      const response = await axios.post("http://localhost:8000/api/books/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true, // Ensure the auth token is sent
       });
+  
+      console.log("Response:", response.data);
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 3000);
     } catch (error) {
       console.error("Upload failed:", error);
-      setToastMessage("Upload failed. Please try again.");
-      setTimeout(() => setToastMessage(""), 3000);
+      alert("Upload failed. Try again.");
     }
+  
+    setFormData({
+      bookName: "",
+      bookDetails: "",
+      demandPrice: "",
+      bookCondition: "Excellent",
+      state: "",
+      addressLine: "",
+      contactNumber: "",
+      photos: [],
+    });
   };
+  
 
   return (
     <div className="form-container">
@@ -143,17 +128,10 @@ const Seller = () => {
 
         <div className="form-group bordered">
           <label>Contact Number:</label>
-          <input
-            type="tel"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleChange}
-            required
-            pattern="[0-9]{10}"
-            title="Contact number must be exactly 10 digits."
-          />
+          <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required pattern="[0-9]{10}" title="Contact number must be exactly 10 digits." />
         </div>
 
+        {/* Upload Photos Section */}
         <div className="form-group bordered">
           <label>Upload Photos (up to 6):</label>
           <input type="file" multiple accept="image/*" onChange={handleFileChange} />
@@ -173,7 +151,7 @@ const Seller = () => {
         <button type="submit" className="submit-button">Submit</button>
       </form>
 
-      {toastMessage && <div className="toast">{toastMessage}</div>}
+      {toastVisible && <div className="toast">Form submitted successfully!</div>}
     </div>
   );
 };

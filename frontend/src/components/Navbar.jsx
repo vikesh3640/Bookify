@@ -4,15 +4,11 @@ import axios from 'axios';
 import '../../src/css/Navbar.css';
 import logo from '../assets/logo.jpeg';
 
-axios.defaults.withCredentials = true;
-
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   // Load user from localStorage OR fetch from API
   useEffect(() => {
@@ -39,7 +35,7 @@ const Navbar = () => {
   // Fetch user details from backend
   const fetchUser = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/api/user/me`, { withCredentials: true });
+      const res = await axios.get('http://localhost:8000/api/user/me', { withCredentials: true });
       setUser(res.data);
       localStorage.setItem("user", JSON.stringify(res.data)); // Save to localStorage
     } catch (error) {
@@ -50,7 +46,7 @@ const Navbar = () => {
 
   // Handle Logout
   const handleLogout = async () => {
-    await axios.get(`${API_BASE}/api/user/logout`, { withCredentials: true });
+    await axios.get('http://localhost:8000/api/user/logout', { withCredentials: true });
     setUser(null);
     localStorage.removeItem("user");
     navigate('/login');
@@ -84,11 +80,7 @@ const Navbar = () => {
           <div className="user-menu">
             <button className="user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
               <img 
-                src={
-                  user.profileImageURL 
-                    ? `${API_BASE}${user.profileImageURL}` 
-                    : '/images/default.webp'
-                } 
+                src={user.profileImageURL ? `http://localhost:8000${user.profileImageURL}` : '/images/default.webp'} 
                 alt="User Profile" 
                 className="user-avatar"
               />
@@ -99,6 +91,7 @@ const Navbar = () => {
               <div className="dropdown">
                 <Link to="/profile" className="dropdown-item">Profile</Link>
                 <Link to="/orders" className="dropdown-item" target="_blank">Orders</Link>
+
                 <Link to="/wishlist" className="dropdown-item">Wishlist</Link>
                 <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
               </div>

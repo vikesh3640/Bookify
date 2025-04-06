@@ -4,18 +4,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-axios.defaults.withCredentials = true;
-
 const SummaryPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState("upi");
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/cart`, { withCredentials: true })
+      .get("http://localhost:8000/api/cart", { withCredentials: true })
       .then((response) => {
         setCartItems(response.data.items || []);
       })
@@ -23,7 +19,7 @@ const SummaryPage = () => {
         console.error("Error fetching cart:", error);
         toast.error("Failed to load cart items");
       });
-  }, [API_BASE_URL]);
+  }, []);
 
   const handleQuantityChange = async (bookId, delta) => {
     const updatedCart = cartItems.map((item) => {
@@ -44,7 +40,7 @@ const SummaryPage = () => {
 
     try {
       await axios.put(
-        `${API_BASE_URL}/api/cart/update`,
+        "http://localhost:8000/api/cart/update",
         { bookId, quantity: updatedCart.find((item) => item.book._id === bookId)?.quantity },
         { withCredentials: true }
       );
@@ -58,7 +54,7 @@ const SummaryPage = () => {
 
   const handleRemove = async (bookId) => {
     try {
-      await axios.delete(`${API_BASE_URL}/api/cart/remove/${bookId}`, { withCredentials: true });
+      await axios.delete(`http://localhost:8000/api/cart/remove/${bookId}`, { withCredentials: true });
       setCartItems((prevItems) => prevItems.filter((item) => item.book._id !== bookId));
       toast.success("Book removed from cart!");
     } catch (error) {
@@ -83,9 +79,10 @@ const SummaryPage = () => {
 
     try {
       setLoading(true);
-
+      
+      // Create order in backend
       const orderResponse = await axios.post(
-        `${API_BASE_URL}/api/payment/order`,
+        "http://localhost:8000/api/payment/order",
         { amount: totalPrice },
         { withCredentials: true }
       );
@@ -93,7 +90,7 @@ const SummaryPage = () => {
       const { orderId, currency } = orderResponse.data;
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY,
+        key: process.env.REACT_APP_RAZORPAY_KEY,
         amount: totalPrice * 100,
         currency: currency,
         name: "Bookify Store",
@@ -102,7 +99,7 @@ const SummaryPage = () => {
         handler: async function (response) {
           try {
             await axios.post(
-              `${API_BASE_URL}/api/payment/verify`,
+              "http://localhost:8000/api/payment/verify",
               { ...response, orderId },
               { withCredentials: true }
             );
@@ -142,7 +139,7 @@ const SummaryPage = () => {
           {cartItems.map(({ book, quantity }) => (
             <div key={book._id} className="cart-item">
               <div className="cart-item-image">
-                <img src={`${API_BASE_URL}/uploads/${book.photos[0]}`} alt={book.bookName} />
+                <img src={`http://localhost:8000/uploads/${book.photos[0]}`} alt={book.bookName} />
               </div>
               <div className="cart-item-details">
                 <h3>{book.bookName}</h3>

@@ -3,26 +3,25 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../src/css/Homepage.css";
 
-axios.defaults.withCredentials = true;
 const HomePage = () => {
   const [books, setBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 8;
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL;
-
   useEffect(() => {
     axios
-      .get(`${API_BASE}/api/books/all`)
+      .get("http://localhost:8000/api/books/all")
       .then((response) => setBooks(response.data))
       .catch((error) => console.error("Error fetching books:", error));
-  }, [API_BASE]);
+  }, []);
 
+  // Filtering books based on search query
   const filteredBooks = books.filter((book) =>
     book.bookName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Pagination logic
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
   const displayedBooks = filteredBooks.slice(
     (currentPage - 1) * booksPerPage,
@@ -58,7 +57,7 @@ const HomePage = () => {
           displayedBooks.map((book) => (
             <Link key={book._id} to={`/book/${book._id}`} className="book-card">
               <img
-                src={`${API_BASE}/uploads/${book.photos[0]}`}
+                src={`http://localhost:8000/uploads/${book.photos[0]}`}
                 alt={book.bookName}
                 className="book-image"
               />

@@ -5,20 +5,19 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../src/css/BookDetails.css";
 
-axios.defaults.withCredentials = true;
 const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [orderId, setOrderId] = useState("");
   const [userId, setUserId] = useState(null);
-
-  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/api/user/me`, {
+        const response = await axios.get("http://localhost:8000/api/user/me", {
           withCredentials: true,
         });
         setUserId(response.data._id);
@@ -29,17 +28,17 @@ const BookDetails = () => {
     };
 
     fetchUser();
-  }, [API_BASE]);
+  }, []);
 
   useEffect(() => {
     axios
-      .get(`${API_BASE}/api/books/${id}`)
+      .get(`http://localhost:8000/api/books/${id}`)
       .then((response) => {
         setBook(response.data);
         setSelectedImage(response.data.photos[0]);
       })
       .catch((error) => console.error("Error fetching book details:", error));
-  }, [id, API_BASE]);
+  }, [id]);
 
   const addToCart = () => {
     if (!userId) {
@@ -48,11 +47,7 @@ const BookDetails = () => {
     }
 
     axios
-      .post(
-        `${API_BASE}/api/cart/add`,
-        { bookId: id, userId },
-        { withCredentials: true }
-      )
+      .post("http://localhost:8000/api/cart/add", { bookId: id, userId }, { withCredentials: true })
       .then(() => toast.success("Book added to cart! 🛒"))
       .catch((error) => {
         console.error("Error adding to cart:", error);
@@ -90,7 +85,7 @@ const BookDetails = () => {
       order_id: orderId,
       handler: async function (response) {
         try {
-          const verifyRes = await axios.post(`${API_BASE}/api/payment/verify-payment`, {
+          const verifyRes = await axios.post("http://localhost:8000/api/payment/verify-payment", {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature,
@@ -121,7 +116,7 @@ const BookDetails = () => {
     }
 
     axios
-      .post(`${API_BASE}/api/payment/create-order`, {
+      .post("http://localhost:8000/api/payment/create-order", {
         amount: book.demandPrice,
         userId,
         items: [{ bookId: book._id, title: book.bookName, price: book.demandPrice, quantity: 1 }],
@@ -145,18 +140,12 @@ const BookDetails = () => {
     <div className="book-details-container">
       <div className="book-image-section">
         <div className="main-image-wrapper">
-          <img src={`${API_BASE}/uploads/${selectedImage}`} alt={book.bookName} className="book-image-large" />
+          <img src={`http://localhost:8000/uploads/${selectedImage}`} alt={book.bookName} className="book-image-large" />
         </div>
 
         <div className="thumbnail-section">
           {book.photos.map((photo, index) => (
-            <img
-              key={index}
-              src={`${API_BASE}/uploads/${photo}`}
-              alt={`Thumbnail ${index + 1}`}
-              className={`book-thumbnail ${selectedImage === photo ? "active" : ""}`}
-              onClick={() => setSelectedImage(photo)}
-            />
+            <img key={index} src={`http://localhost:8000/uploads/${photo}`} alt={`Thumbnail ${index + 1}`} className={`book-thumbnail ${selectedImage === photo ? "active" : ""}`} onClick={() => setSelectedImage(photo)} />
           ))}
         </div>
 
@@ -171,10 +160,7 @@ const BookDetails = () => {
         <p className="book-condition"><strong>Condition:</strong> {book.bookCondition}</p>
         <p className="book-price"><span>Special Price: </span><br /><span className="discounted-price">₹{book.demandPrice}</span></p>
         <hr />
-        <div className="book-details">
-          <h3>Book Details</h3>
-          <p>{book.bookDetails}</p>
-        </div>
+        <div className="book-details"><h3>Book Details</h3><p>{book.bookDetails}</p></div>
       </div>
     </div>
   );
