@@ -11,6 +11,9 @@ const LoginSignup = () => {
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
+  // Add this to make sure Axios sends credentials (cookies)
+  axios.defaults.withCredentials = true;
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -22,12 +25,11 @@ const LoginSignup = () => {
     try {
       let response;
       if (isLogin) {
-        response = await axios.post(`${API_BASE}/api/user/signin`, formData, {
-          withCredentials: true,
-        });
-
+        response = await axios.post(`${API_BASE}/api/user/signin`, formData);
+        
         if (response.data.user) {
-          localStorage.setItem("user", JSON.stringify(response.data.user));
+          // No need to store user in localStorage anymore
+          // The token will be automatically stored in cookies by the backend
         }
 
         navigate('/');

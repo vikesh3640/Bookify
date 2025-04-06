@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../src/css/BookDetails.css";
 
+axios.defaults.withCredentials = true;
 const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();

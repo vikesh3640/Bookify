@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../src/css/Profile.css';
+axios.defaults.withCredentials = true;
 
 const Profile = () => {
   const [user, setUser] = useState({
