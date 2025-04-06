@@ -16,22 +16,24 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState('');
 
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/me`, {
+        const res = await axios.get(`${API_BASE}/api/user/me`, {
           withCredentials: true
         });
         setUser(res.data);
         if (res.data.profileImageURL) {
-          setImagePreview(`${import.meta.env.VITE_API_BASE_URL}${res.data.profileImageURL}`);
+          setImagePreview(`${API_BASE}${res.data.profileImageURL}`);
         }
       } catch (error) {
         console.error("Failed to fetch user data", error);
       }
     };
     fetchUser();
-  }, []);
+  }, [API_BASE]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -56,8 +58,8 @@ const Profile = () => {
     formData.append('address', user.address || '');
 
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/update-profile`,
+      await axios.put(
+        `${API_BASE}/api/user/update-profile`,
         formData,
         {
           withCredentials: true,
@@ -66,12 +68,13 @@ const Profile = () => {
       );
 
       setMessage('Profile updated successfully!');
-      const updatedUser = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/me`, {
+
+      const updatedUser = await axios.get(`${API_BASE}/api/user/me`, {
         withCredentials: true
       });
       setUser(updatedUser.data);
       if (updatedUser.data.profileImageURL) {
-        setImagePreview(`${import.meta.env.VITE_API_BASE_URL}${updatedUser.data.profileImageURL}`);
+        setImagePreview(`${API_BASE}${updatedUser.data.profileImageURL}`);
       }
     } catch (error) {
       setMessage('Failed to update profile');

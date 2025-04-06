@@ -9,12 +9,14 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 8;
 
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_BASE_URL}/api/books/all`)
+      .get(`${API_BASE}/api/books/all`)
       .then((response) => setBooks(response.data))
       .catch((error) => console.error("Error fetching books:", error));
-  }, []);
+  }, [API_BASE]);
 
   const filteredBooks = books.filter((book) =>
     book.bookName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -55,7 +57,7 @@ const HomePage = () => {
           displayedBooks.map((book) => (
             <Link key={book._id} to={`/book/${book._id}`} className="book-card">
               <img
-                src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${book.photos[0]}`}
+                src={`${API_BASE}/uploads/${book.photos[0]}`}
                 alt={book.bookName}
                 className="book-image"
               />

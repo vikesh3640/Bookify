@@ -3,11 +3,11 @@ import '../../src/css/Seller.css';
 import axios from "axios";
 
 const states = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
-  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
   "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
-  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
   "Uttar Pradesh", "Uttarakhand", "West Bengal"
 ];
 
@@ -23,7 +23,7 @@ const Seller = () => {
     photos: [],
   });
 
-  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,15 +31,24 @@ const Seller = () => {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 6);
+    const files = Array.from(e.target.files).slice(0, 6); // Limit to 6 images
     setFormData({ ...formData, photos: files });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate contact number
     if (!/^[0-9]{10}$/.test(formData.contactNumber)) {
-      alert("Contact number must be exactly 10 digits.");
+      setToastMessage("Contact number must be exactly 10 digits.");
+      setTimeout(() => setToastMessage(""), 3000);
+      return;
+    }
+
+    // Validate photo limit again (defensive check)
+    if (formData.photos.length > 6) {
+      setToastMessage("You can upload a maximum of 6 photos.");
+      setTimeout(() => setToastMessage(""), 3000);
       return;
     }
 
@@ -67,23 +76,25 @@ const Seller = () => {
       );
 
       console.log("Response:", response.data);
-      setToastVisible(true);
-      setTimeout(() => setToastVisible(false), 3000);
+      setToastMessage("Form submitted successfully!");
+      setTimeout(() => setToastMessage(""), 3000);
+
+      // Reset form after submission
+      setFormData({
+        bookName: "",
+        bookDetails: "",
+        demandPrice: "",
+        bookCondition: "Excellent",
+        state: "",
+        addressLine: "",
+        contactNumber: "",
+        photos: [],
+      });
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Upload failed. Try again.");
+      setToastMessage("Upload failed. Please try again.");
+      setTimeout(() => setToastMessage(""), 3000);
     }
-
-    setFormData({
-      bookName: "",
-      bookDetails: "",
-      demandPrice: "",
-      bookCondition: "Excellent",
-      state: "",
-      addressLine: "",
-      contactNumber: "",
-      photos: [],
-    });
   };
 
   return (
@@ -94,14 +105,17 @@ const Seller = () => {
           <label>Book Name:</label>
           <input type="text" name="bookName" value={formData.bookName} onChange={handleChange} required />
         </div>
+
         <div className="form-group bordered">
           <label>Book Details:</label>
           <textarea name="bookDetails" value={formData.bookDetails} onChange={handleChange} required rows="4" />
         </div>
+
         <div className="form-group bordered">
           <label>Demand Price (₹):</label>
           <input type="number" name="demandPrice" value={formData.demandPrice} onChange={handleChange} required min="1" />
         </div>
+
         <div className="form-group bordered">
           <label>Book Condition:</label>
           <select name="bookCondition" value={formData.bookCondition} onChange={handleChange} required>
@@ -110,6 +124,7 @@ const Seller = () => {
             <option value="Poor">Poor</option>
           </select>
         </div>
+
         <div className="form-group bordered">
           <label>State:</label>
           <select name="state" value={formData.state} onChange={handleChange} required>
@@ -119,21 +134,45 @@ const Seller = () => {
             ))}
           </select>
         </div>
+
         <div className="form-group bordered">
           <label>Address Line:</label>
           <input type="text" name="addressLine" value={formData.addressLine} onChange={handleChange} required />
         </div>
+
         <div className="form-group bordered">
           <label>Contact Number:</label>
-          <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required pattern="[0-9]{10}" title="Contact number must be exactly 10 digits." />
+          <input
+            type="tel"
+            name="contactNumber"
+            value={formData.contactNumber}
+            onChange={handleChange}
+            required
+            pattern="[0-9]{10}"
+            title="Contact number must be exactly 10 digits."
+          />
         </div>
+
         <div className="form-group bordered">
           <label>Upload Photos (up to 6):</label>
           <input type="file" multiple accept="image/*" onChange={handleFileChange} />
+          <div className="photo-grid">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="photo-box">
+                {formData.photos[index] ? (
+                  <img src={URL.createObjectURL(formData.photos[index])} alt="Preview" />
+                ) : (
+                  <span>+</span>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-        <button type="submit">Submit</button>
-        {toastVisible && <p className="toast-message">Book listed successfully!</p>}
+
+        <button type="submit" className="submit-button">Submit</button>
       </form>
+
+      {toastMessage && <div className="toast">{toastMessage}</div>}
     </div>
   );
 };
