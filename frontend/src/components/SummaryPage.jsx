@@ -19,6 +19,18 @@ const SummaryPage = () => {
         console.error("Error fetching cart:", error);
         toast.error("Failed to load cart items");
       });
+
+    // Dynamically load Razorpay script
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => console.log("Razorpay SDK loaded.");
+    script.onerror = () => toast.error("Failed to load Razorpay SDK.");
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const handleQuantityChange = async (bookId, delta) => {
@@ -77,10 +89,14 @@ const SummaryPage = () => {
       return;
     }
 
+    if (!window.Razorpay) {
+      toast.error("Razorpay SDK not loaded yet!");
+      return;
+    }
+
     try {
       setLoading(true);
-      
-      // Create order in backend
+
       const orderResponse = await axios.post(
         "http://localhost:8000/api/payment/order",
         { amount: totalPrice },
@@ -90,9 +106,9 @@ const SummaryPage = () => {
       const { orderId, currency } = orderResponse.data;
 
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY,
+        key: import.meta.env.VITE_RAZORPAY_KEY, // ✅ Use Vite's env variable
         amount: totalPrice * 100,
-        currency: currency,
+        currency,
         name: "Bookify Store",
         description: "Book Purchase",
         order_id: orderId,
@@ -119,8 +135,8 @@ const SummaryPage = () => {
         },
       };
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("Failed to initiate payment.");

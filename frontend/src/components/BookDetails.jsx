@@ -10,14 +10,14 @@ const BookDetails = () => {
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [paymentDetails, setPaymentDetails] = useState(null);
-  const [orderId, setOrderId] = useState("");
   const [userId, setUserId] = useState(null);
+
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/me", {
+        const response = await axios.get(`${BASE_URL}/api/user/me`, {
           withCredentials: true,
         });
         setUserId(response.data._id);
@@ -28,17 +28,17 @@ const BookDetails = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [BASE_URL]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/books/${id}`)
+      .get(`${BASE_URL}/api/books/${id}`)
       .then((response) => {
         setBook(response.data);
         setSelectedImage(response.data.photos[0]);
       })
       .catch((error) => console.error("Error fetching book details:", error));
-  }, [id]);
+  }, [id, BASE_URL]);
 
   const addToCart = () => {
     if (!userId) {
@@ -47,7 +47,7 @@ const BookDetails = () => {
     }
 
     axios
-      .post("http://localhost:8000/api/cart/add", { bookId: id, userId }, { withCredentials: true })
+      .post(`${BASE_URL}/api/cart/add`, { bookId: id, userId }, { withCredentials: true })
       .then(() => toast.success("Book added to cart! 🛒"))
       .catch((error) => {
         console.error("Error adding to cart:", error);
@@ -77,7 +77,7 @@ const BookDetails = () => {
     }
 
     const options = {
-      key: "rzp_test_y2aFO9g9wRRMcD",
+      key: import.meta.env.REACT_APP_RAZORPAY_KEY,
       amount: amount * 100,
       currency: "INR",
       name: "Bookify",
@@ -85,7 +85,7 @@ const BookDetails = () => {
       order_id: orderId,
       handler: async function (response) {
         try {
-          const verifyRes = await axios.post("http://localhost:8000/api/payment/verify-payment", {
+          const verifyRes = await axios.post(`${BASE_URL}/api/payment/verify-payment`, {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature,
@@ -116,7 +116,7 @@ const BookDetails = () => {
     }
 
     axios
-      .post("http://localhost:8000/api/payment/create-order", {
+      .post(`${BASE_URL}/api/payment/create-order`, {
         amount: book.demandPrice,
         userId,
         items: [{ bookId: book._id, title: book.bookName, price: book.demandPrice, quantity: 1 }],
@@ -140,12 +140,18 @@ const BookDetails = () => {
     <div className="book-details-container">
       <div className="book-image-section">
         <div className="main-image-wrapper">
-          <img src={`http://localhost:8000/uploads/${selectedImage}`} alt={book.bookName} className="book-image-large" />
+          <img src={`${BASE_URL}/uploads/${selectedImage}`} alt={book.bookName} className="book-image-large" />
         </div>
 
         <div className="thumbnail-section">
           {book.photos.map((photo, index) => (
-            <img key={index} src={`http://localhost:8000/uploads/${photo}`} alt={`Thumbnail ${index + 1}`} className={`book-thumbnail ${selectedImage === photo ? "active" : ""}`} onClick={() => setSelectedImage(photo)} />
+            <img
+              key={index}
+              src={`${BASE_URL}/uploads/${photo}`}
+              alt={`Thumbnail ${index + 1}`}
+              className={`book-thumbnail ${selectedImage === photo ? "active" : ""}`}
+              onClick={() => setSelectedImage(photo)}
+            />
           ))}
         </div>
 
@@ -158,9 +164,15 @@ const BookDetails = () => {
       <div className="book-info-section">
         <h2>{book.bookName}</h2>
         <p className="book-condition"><strong>Condition:</strong> {book.bookCondition}</p>
-        <p className="book-price"><span>Special Price: </span><br /><span className="discounted-price">₹{book.demandPrice}</span></p>
+        <p className="book-price">
+          <span>Special Price: </span><br />
+          <span className="discounted-price">₹{book.demandPrice}</span>
+        </p>
         <hr />
-        <div className="book-details"><h3>Book Details</h3><p>{book.bookDetails}</p></div>
+        <div className="book-details">
+          <h3>Book Details</h3>
+          <p>{book.bookDetails}</p>
+        </div>
       </div>
     </div>
   );

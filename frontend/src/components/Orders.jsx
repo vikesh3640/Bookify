@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../src/css/Orders.css";
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/user/me", {
+        const response = await axios.get(`${API}/api/user/me`, {
           withCredentials: true,
         });
         setUserId(response.data._id);
@@ -27,9 +29,7 @@ const Orders = () => {
 
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/orders?userId=${userId}`
-        );
+        const response = await axios.get(`${API}/api/orders?userId=${userId}`);
         setOrders(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -49,18 +49,16 @@ const Orders = () => {
         <p>No orders found.</p>
       ) : (
         <div className="orders-container">
-           <h2>My Orders</h2>
+          <h2>My Orders</h2>
           {orders.map((order) => (
             <div key={order._id} className="order-card">
               {order.items.map(({ bookId, quantity }) => (
                 <div key={bookId._id} className="order-item">
-
-                  {/* Left Section: Image, Book Name, Color, Quantity */}
                   <div className="order-left">
                     <img
                       src={
                         bookId.photos?.[0]
-                          ? `http://localhost:8000/uploads/${bookId.photos[0]}`
+                          ? `${API}/uploads/${bookId.photos[0]}`
                           : "/default-book.png"
                       }
                       alt={bookId.bookName}
@@ -73,20 +71,16 @@ const Orders = () => {
                     </div>
                   </div>
 
-                  {/* Center Section: Price, Delivery Status, Message */}
                   <div className="order-center">
                     <p className="order-amount">₹{order.amount}</p>
                     <p className={`order-status ${order.paymentStatus.toLowerCase()}`}>
                       ● Delivered on {new Date(order.createdAt).toLocaleDateString()}
                     </p>
-                    {/* <p className="order-delivery-msg">Your item has been delivered</p> */}
                   </div>
 
-                  {/* Right Section: Rate & Review Button */}
                   <div className="order-right">
                     <button className="rate-review">★ Rate & Review Product</button>
                   </div>
-
                 </div>
               ))}
             </div>

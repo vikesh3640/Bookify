@@ -10,7 +10,6 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Load user from localStorage OR fetch from API
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -20,7 +19,6 @@ const Navbar = () => {
       fetchUser();
     }
 
-    // Listen for profile updates from localStorage
     const handleStorageChange = () => {
       const updatedUser = localStorage.getItem("user");
       if (updatedUser) {
@@ -32,21 +30,23 @@ const Navbar = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // Fetch user details from backend
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/user/me', { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/me`, {
+        withCredentials: true,
+      });
       setUser(res.data);
-      localStorage.setItem("user", JSON.stringify(res.data)); // Save to localStorage
+      localStorage.setItem("user", JSON.stringify(res.data));
     } catch (error) {
       setUser(null);
       localStorage.removeItem("user");
     }
   };
 
-  // Handle Logout
   const handleLogout = async () => {
-    await axios.get('http://localhost:8000/api/user/logout', { withCredentials: true });
+    await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/logout`, {
+      withCredentials: true,
+    });
     setUser(null);
     localStorage.removeItem("user");
     navigate('/login');
@@ -54,19 +54,16 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      {/* Logo Section */}
       <div className="logo">
         <Link to="/">
           <img src={logo} alt="Bookify Logo" />
         </Link>
       </div>
 
-      {/* Hamburger Menu for Mobile */}
       <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
         ☰
       </button>
 
-      {/* Navigation Links */}
       <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
         <li><Link to="/" className="nav-item" onClick={() => setMenuOpen(false)}>Home</Link></li>
         <li><Link to="/seller" className="nav-item" onClick={() => setMenuOpen(false)}>Sell Books</Link></li>
@@ -74,13 +71,16 @@ const Navbar = () => {
         <li><Link to="/cart" className="nav-item" onClick={() => setMenuOpen(false)}>Cart</Link></li>
       </ul>
 
-      {/* User Profile / Login Button */}
       <div className="user-container">
         {user ? (
           <div className="user-menu">
             <button className="user-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
               <img 
-                src={user.profileImageURL ? `http://localhost:8000${user.profileImageURL}` : '/images/default.webp'} 
+                src={
+                  user.profileImageURL
+                    ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImageURL}`
+                    : '/images/default.webp'
+                }
                 alt="User Profile" 
                 className="user-avatar"
               />
@@ -91,7 +91,6 @@ const Navbar = () => {
               <div className="dropdown">
                 <Link to="/profile" className="dropdown-item">Profile</Link>
                 <Link to="/orders" className="dropdown-item" target="_blank">Orders</Link>
-
                 <Link to="/wishlist" className="dropdown-item">Wishlist</Link>
                 <button onClick={handleLogout} className="dropdown-item logout-btn">Logout</button>
               </div>

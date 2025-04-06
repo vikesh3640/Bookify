@@ -31,18 +31,18 @@ const Seller = () => {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 6); // Limit to 6 images
+    const files = Array.from(e.target.files).slice(0, 6);
     setFormData({ ...formData, photos: files });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!/^[0-9]{10}$/.test(formData.contactNumber)) {
       alert("Contact number must be exactly 10 digits.");
       return;
     }
-  
+
     const data = new FormData();
     data.append("bookName", formData.bookName);
     data.append("bookDetails", formData.bookDetails);
@@ -51,17 +51,21 @@ const Seller = () => {
     data.append("state", formData.state);
     data.append("addressLine", formData.addressLine);
     data.append("contactNumber", formData.contactNumber);
-  
+
     formData.photos.forEach((photo) => {
       data.append("photos", photo);
     });
-  
+
     try {
-      const response = await axios.post("http://localhost:8000/api/books/upload", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true, // Ensure the auth token is sent
-      });
-  
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/books/upload`,
+        data,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+
       console.log("Response:", response.data);
       setToastVisible(true);
       setTimeout(() => setToastVisible(false), 3000);
@@ -69,7 +73,7 @@ const Seller = () => {
       console.error("Upload failed:", error);
       alert("Upload failed. Try again.");
     }
-  
+
     setFormData({
       bookName: "",
       bookDetails: "",
@@ -81,7 +85,6 @@ const Seller = () => {
       photos: [],
     });
   };
-  
 
   return (
     <div className="form-container">
@@ -91,17 +94,14 @@ const Seller = () => {
           <label>Book Name:</label>
           <input type="text" name="bookName" value={formData.bookName} onChange={handleChange} required />
         </div>
-
         <div className="form-group bordered">
           <label>Book Details:</label>
           <textarea name="bookDetails" value={formData.bookDetails} onChange={handleChange} required rows="4" />
         </div>
-
         <div className="form-group bordered">
           <label>Demand Price (₹):</label>
           <input type="number" name="demandPrice" value={formData.demandPrice} onChange={handleChange} required min="1" />
         </div>
-
         <div className="form-group bordered">
           <label>Book Condition:</label>
           <select name="bookCondition" value={formData.bookCondition} onChange={handleChange} required>
@@ -110,7 +110,6 @@ const Seller = () => {
             <option value="Poor">Poor</option>
           </select>
         </div>
-
         <div className="form-group bordered">
           <label>State:</label>
           <select name="state" value={formData.state} onChange={handleChange} required>
@@ -120,38 +119,21 @@ const Seller = () => {
             ))}
           </select>
         </div>
-
         <div className="form-group bordered">
           <label>Address Line:</label>
           <input type="text" name="addressLine" value={formData.addressLine} onChange={handleChange} required />
         </div>
-
         <div className="form-group bordered">
           <label>Contact Number:</label>
           <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required pattern="[0-9]{10}" title="Contact number must be exactly 10 digits." />
         </div>
-
-        {/* Upload Photos Section */}
         <div className="form-group bordered">
           <label>Upload Photos (up to 6):</label>
           <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-          <div className="photo-grid">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="photo-box">
-                {formData.photos[index] ? (
-                  <img src={URL.createObjectURL(formData.photos[index])} alt="Preview" />
-                ) : (
-                  <span>+</span>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
-
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit">Submit</button>
+        {toastVisible && <p className="toast-message">Book listed successfully!</p>}
       </form>
-
-      {toastVisible && <div className="toast">Form submitted successfully!</div>}
     </div>
   );
 };
