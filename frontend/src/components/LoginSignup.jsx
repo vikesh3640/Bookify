@@ -9,11 +9,6 @@ const LoginSignup = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL;
-
-  // Add this to make sure Axios sends credentials (cookies)
-  axios.defaults.withCredentials = true;
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,29 +16,27 @@ const LoginSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       let response;
       if (isLogin) {
-        response = await axios.post(`${API_BASE}/api/user/signin`, formData, {
-          withCredentials: true,
-        });
-      
+        response = await axios.post('http://localhost:8000/api/user/signin', formData, { withCredentials: true });
+  
+        // Store user in localStorage after successful login
         if (response.data.user) {
-          // The token is stored in cookies
+          localStorage.setItem("user", JSON.stringify(response.data.user));
         }
-      
+  
         navigate('/');
-      }
-       else {
-        response = await axios.post(`${API_BASE}/api/user/signup`, formData);
+      } else {
+        response = await axios.post('http://localhost:8000/api/user/signup', formData);
         alert("Signup Successful!");
       }
     } catch (error) {
       setError(error.response?.data?.error || "Something went wrong");
     }
   };
-
+  
   return (
     <div className={styles.loginSignupContainer}>
       <div className={styles.formContainer}>
@@ -56,8 +49,8 @@ const LoginSignup = () => {
         {/* Right Section (Login/Signup Form) */}
         <div className={styles.right}>
           <div className={styles.logoContainer}>
-            <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
-            <h2>Bookify</h2>
+          <img src="/logo.jpeg" alt="Logo" className={styles.logo} />
+            <h2>Bookify</h2> {/* Update this with your actual heading */}
           </div>
           <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
           <p>Please {isLogin ? "login" : "signup"} to your account</p>
@@ -66,48 +59,25 @@ const LoginSignup = () => {
             {!isLogin && (
               <div className={styles.formGroup}>
                 <label>Full Name</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Enter your full name"
-                  onChange={handleChange}
-                  required
-                />
+                <input type="text" name="fullName" placeholder="Enter your full name" onChange={handleChange} required />
               </div>
             )}
             <div className={styles.formGroup}>
               <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                onChange={handleChange}
-                required
-              />
+              <input type="email" name="email" placeholder="Enter your email" onChange={handleChange} required />
             </div>
             <div className={styles.formGroup}>
               <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                onChange={handleChange}
-                required
-              />
+              <input type="password" name="password" placeholder="Enter your password" onChange={handleChange} required />
             </div>
             {error && <p className={styles.error}>{error}</p>}
-            <button type="submit" className={styles.submitBtn}>
-              {isLogin ? "Login" : "Signup"}
-            </button>
+            <button type="submit" className={styles.submitBtn}>{isLogin ? "Login" : "Signup"}</button>
           </form>
 
           {/* Toggle between Login and Signup */}
           <p className={styles.toggleText}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <span onClick={() => setIsLogin(!isLogin)}>
-              {" "}
-              {isLogin ? "Signup" : "Login"}
-            </span>
+            <span onClick={() => setIsLogin(!isLogin)}> {isLogin ? "Signup" : "Login"}</span>
           </p>
         </div>
       </div>

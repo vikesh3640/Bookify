@@ -36,16 +36,11 @@ router.post('/signin', async (req, res) => {
         const token = await User.matchPasswordAndGenerateToken(email, password);
         const user = await User.findOne({ email }).select("fullName email profileImageURL");
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true, // Only sent over HTTPS
-            sameSite: "None" // Allows cookies to be sent cross-origin
-        }).json({
+        res.cookie("token", token, { httpOnly: true }).json({
             success: true,
             token,
             user
         });
-        
     } catch (error) {
         res.status(401).json({ error: "Invalid email or password" });
     }
