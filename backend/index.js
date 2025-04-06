@@ -47,16 +47,19 @@ app.use(cors({
       return callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true,
+  credentials: true,  // Allow credentials (cookies) to be sent
 }));
 
 // Middleware
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser());  // Middleware to parse cookies
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from 'uploads'
 app.use("/uploads", express.static("uploads"));
+
+// Authentication Middleware
+const { checkAuth } = require("./middlewares/auth");
 
 // Use Routes
 app.use("/api/books", bookRoutes);
